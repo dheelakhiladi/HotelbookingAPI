@@ -1,0 +1,21 @@
+<table align="Center" border="1" frame="border">
+		<tr>
+			<td>Room Number</td>
+			<td>Type</td>
+		</tr>
+	
+		{% for i in data %}
+		<tr>
+			<td>{{i[0]}}</td>
+			<td>{{i[1]}}</td>
+		</tr>
+		{% endfor %}
+	
+</table>
+<form action="/book" method="POST">
+	<p align="Center">Select rooms to Book
+		<br>
+	<input type="text" name="rno" required="required" align="middle">
+	<input type="submit" name="Book" value="Book">
+	</p>
+</form>
