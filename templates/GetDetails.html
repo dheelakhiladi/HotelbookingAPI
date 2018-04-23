@@ -1,15 +1,25 @@
-<p align="center">
-	<form action="/Dbwrite" method="POST">
-		<p>NAME</p> 
-		<input type="Text" name="Name">
-		<p>Gender</p>
-		<p>Male</p>
-		<input type="radio" value="M" name="gender">
-		<p>Female</p><input type="radio" name="gender" value="F">
-		<p>Phone</p>
-		<input type="number" name="Phone" min="1000000000" max="9999999999">
-		<p>Enter Your ID Proof number</p>
-		<input type="text" name="idproof">
-		<input type="submit" name="Checkin" value="Checkin">
-	</form>	
-</p>
+<form action="/Dbwrite" method="POST">
+		<p align="center">
+			Name: <input type="Text" name="Name">
+		</p>
+		<p align="center">
+			Gender
+			Male	
+			<input type="radio" value="M" name="gender">
+			Female
+			<input type="radio" name="gender" value="F">
+		</p>
+		<p align="center">
+			Phone:
+			<input type="number" name="Phone" min="1000000000" max="9999999999">
+		</p>
+		<p align="center">
+		Enter Your ID Proof number
+		</p>
+		<p align="center">
+			<input type="text" name="idproof">
+		</p>
+		<p align="center">
+			<input type="submit" name="Checkin" value="Checkin">
+		</p>
+</form>	

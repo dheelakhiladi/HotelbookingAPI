@@ -4,15 +4,11 @@ from flask_mysqldb import MySQL
 import os
 import datetime
 app= Flask(__name__)
-
-
-
 mysql = MySQL(app)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'sonyvaio'
 app.config['MYSQL_DB'] = 'hotel'
-
 
 @app.route('/')
 def home():
@@ -28,11 +24,13 @@ def do_admin_login():
     else:
         flash('Wrong Password !')
     return home()
+
 @app.route("/logout")
 def logout():
     logged_in = session.get('logged_in')
     session[logged_in] = False
     return home()
+
 @app.route('/CheckAvailability', methods = ['POST'])
 def CheckAvailability():
     cursor = mysql.connection.cursor()
@@ -41,7 +39,6 @@ def CheckAvailability():
     session['currCheckinDate'] = currCheckinDate
     session['currCheckoutDate'] = currCheckoutDate
     today = datetime.datetime.today().strftime('%Y-%m-%d')
-    print today
     if currCheckoutDate <= currCheckinDate or currCheckinDate < today:
         error = 'Invalid dates'
         return render_template('Booking details.html')
@@ -74,12 +71,12 @@ def write():
     gender = request.form['gender']
     phone = request.form['Phone']
     ID = request.form['idproof']
-
     for i in rnos:
         W_query = "insert into visitors (Name,PhoneNo,VisitorsId,CheckinDate,CheckoutDate,RoomNo,Gender) values('"+str(name)+" ', '"+str(phone)+"' , '"+str(ID)+"', '" +str(currCheckinDate)+"', ' "+str(currCheckoutDate)+"', ' "+str(i)+"','"+str(gender[0])+"');"
         cursor.execute(W_query)
         mysql.connection.commit()
     return "Booking Successfull"
+
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.run(debug=True, host = '0.0.0.0', port = 4001)
