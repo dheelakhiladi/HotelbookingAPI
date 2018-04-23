@@ -2,6 +2,7 @@ from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
 from flask_mysqldb import MySQL
 import os
+import datetime
 app= Flask(__name__)
 
 
@@ -29,6 +30,7 @@ def do_admin_login():
     return home()
 @app.route("/logout")
 def logout():
+    logged_in = session.get('logged_in')
     session[logged_in] = False
     return home()
 @app.route('/CheckAvailability', methods = ['POST'])
@@ -38,13 +40,15 @@ def CheckAvailability():
     currCheckoutDate=request.form['CheckoutDate']
     session['currCheckinDate'] = currCheckinDate
     session['currCheckoutDate'] = currCheckoutDate
-    if currCheckoutDate<=currCheckinDate:
-        flash("Invalid dates")
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    print today
+    if currCheckoutDate <= currCheckinDate or currCheckinDate < today:
+        error = 'Invalid dates'
         return render_template('Booking details.html')
         pass
     else:
-        query = "select id from visitors where id not in(select id from visitors where ("+currCheckinDate+">CheckoutDate) or ("+currCheckoutDate+"<CheckinDate) )"
-        query2 = "select id , RoomType from room where id not in("+query+")"
+        query = "select RoomNo from visitors where RoomNo not in(select RoomNo from visitors where ('"+currCheckinDate+"'>CheckoutDate) or ('"+currCheckoutDate+"'<CheckinDate) )"
+        query2 = "select id , RoomType from room where RoomNo not in("+query+");"
         cursor.execute(query2)
         if cursor.rowcount !=0:
             data = cursor.fetchall()
