@@ -3,12 +3,14 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 from flask_mysqldb import MySQL
 import os
 import datetime
+import DbConf
+import Admin
 app= Flask(__name__)
 mysql = MySQL(app)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'sonyvaio'
-app.config['MYSQL_DB'] = 'hotel'
+app.config['MYSQL_HOST'] = DbConf.host
+app.config['MYSQL_USER'] = DbConf.user
+app.config['MYSQL_PASSWORD'] = DbConf.passkey
+app.config['MYSQL_DB'] = DbConf.database
 
 @app.route('/')
 def home():
@@ -19,7 +21,7 @@ def home():
 
 @app.route('/login',methods = ['POST'])
 def do_admin_login():
-    if request.form['password'] == '12345' and request.form['username'] == 'admin':
+    if request.form['password'] == Admin.PassKey and request.form['username'] == Admin.username:
         session ['logged_in'] = True
     else:
         flash('Wrong Password !')
