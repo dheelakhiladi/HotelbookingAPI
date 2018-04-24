@@ -81,7 +81,7 @@ def write():
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
-    app.run(debug=True, host = '0.0.0.0', port = 4001)
+    app.run(debug=True, host = '127.0.0.1', port = 8080)
     pass
 
   
