@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+{% block body%}
+{% if data %}
+	<p align="Center">{{data}}</p>
+{% endif %}
+{% endblock %}
 <form action="/CheckAvailability" method="POST">
 	<p align="middle">
 		<p align="center">Enter Check-In Date</p>

@@ -17,15 +17,15 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return render_template('Booking details.html')
+        return render_template('Booking details.html', data = 0)
 
-@app.route('/login',methods = ['POST'])
+@app.route('/check',methods = ['POST'])
 def do_admin_login():
     if request.form['password'] == Admin.PassKey and request.form['username'] == Admin.username:
         session ['logged_in'] = True
+        return home()
     else:
-        flash('Wrong Password !')
-    return home()
+        return render_template('loginError.html')
 
 @app.route("/logout")
 def logout():
@@ -43,7 +43,7 @@ def CheckAvailability():
     today = datetime.datetime.today().strftime('%Y-%m-%d')
     if currCheckoutDate <= currCheckinDate or currCheckinDate < today:
         error = 'Invalid dates'
-        return render_template('Booking details.html')
+        return render_template('Booking details.html', data = error)
         pass
     else:
         query = "select RoomNo from visitors where RoomNo not in(select RoomNo from visitors where ('"+currCheckinDate+"'>CheckoutDate) or ('"+currCheckoutDate+"'<CheckinDate) )"
@@ -51,7 +51,8 @@ def CheckAvailability():
         cursor.execute(query2)
         if cursor.rowcount !=0:
             data = cursor.fetchall()
-            return render_template('Room_Book.html', data=data)
+            return render_template('Room_Book.html', data = data)
+            pass
         else:
             return "No Rooms Available"
 
@@ -62,8 +63,8 @@ def book():
     session['room'] = room
     return render_template('/GetDetails.html',)
     
-@app.route('/Dbwrite', methods=['POST'])
-def write():
+@app.route('/Checkin', methods=['POST'])
+def Checkin():
     cursor = mysql.connection.cursor()
     room = session.get('room')
     currCheckinDate = session.get('currCheckinDate')
