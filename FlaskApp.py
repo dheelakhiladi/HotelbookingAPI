@@ -12,6 +12,8 @@ app.config['MYSQL_USER'] = DbConf.user
 app.config['MYSQL_PASSWORD'] = DbConf.passkey
 app.config['MYSQL_DB'] = DbConf.database
 
+app.secret_key = os.urandom(24)
+
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -80,10 +82,4 @@ def Checkin():
         mysql.connection.commit()
     return "Booking Successfull"
 
-if __name__ == '__main__':
-    app.secret_key = os.urandom(24)
-    app.run(debug=True, host = '127.0.0.1', port = 8080)
-    pass
-
-  
 
