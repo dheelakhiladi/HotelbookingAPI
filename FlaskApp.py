@@ -48,7 +48,7 @@ def CheckAvailability():
         return render_template('Booking details.html', data = error)
         pass
     else:
-        query = "select RoomNo from visitors where RoomNo not in(select RoomNo from visitors where ('"+currCheckinDate+"'>CheckoutDate) or ('"+currCheckoutDate+"'<CheckinDate) )"
+        query = "select RoomNo from visitors where RoomNo not in(select RoomNo from visitors where ('"+currCheckinDate+"'> CheckoutDate) or ('"+currCheckoutDate+"'< CheckinDate) )"
         query2 = "select id , RoomType from room where RoomNo not in("+query+");"
         cursor.execute(query2)
         if cursor.rowcount !=0:
@@ -60,8 +60,7 @@ def CheckAvailability():
 
 @app.route('/book', methods = ['POST'])
 def book():
-    room = request.form['rno']
-    print room
+    room = request.form.getlist('room')
     session['room'] = room
     return render_template('/GetDetails.html',)
     
@@ -71,15 +70,15 @@ def Checkin():
     room = session.get('room')
     currCheckinDate = session.get('currCheckinDate')
     currCheckoutDate = session.get('currCheckoutDate')
-    rnos = room.split(",")
     name = request.form['Name']
     gender = request.form['gender']
     phone = request.form['Phone']
     ID = request.form['idproof']
-    for i in rnos:
+    for i in room:
         W_query = "insert into visitors (Name,PhoneNo,VisitorsId,CheckinDate,CheckoutDate,RoomNo,Gender) values('"+str(name)+" ', '"+str(phone)+"' , '"+str(ID)+"', '" +str(currCheckinDate)+"', ' "+str(currCheckoutDate)+"', ' "+str(i)+"','"+str(gender[0])+"');"
         cursor.execute(W_query)
         mysql.connection.commit()
-    return "Booking Successfull"
+    return render_template('Ticket_Gen.html', data = room)
 
-
+if __name__ == '__main__':
+    app.run()

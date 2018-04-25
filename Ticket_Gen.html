@@ -1,0 +1,16 @@
+<p align="Center">
+	Booking Successfull
+</p>
+<table align="Center">
+	<tr>
+		<td>Room Number(s)</td>
+	</tr>
+	{% for i in data %}
+	<tr>
+		<td>{{i}}</td>
+	</tr>
+	{{% endfor %}}	
+</table>
+<form action="/logout">
+	<input type="submit" name=" logout ">
+</form>
