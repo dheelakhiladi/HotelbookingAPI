@@ -32,7 +32,7 @@ def do_admin_login():
 @app.route("/logout")
 def logout():
     logged_in = session.get('logged_in')
-    session[logged_in] = False
+    session['logged_in'] = False
     return home()
 
 @app.route('/CheckAvailability', methods = ['POST'])
