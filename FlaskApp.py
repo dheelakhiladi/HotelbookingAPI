@@ -48,7 +48,7 @@ def CheckAvailability():
         return render_template('Booking details.html', data = error)
         pass
     else:
-        query = "select RoomNo from visitors where RoomNo not in(select RoomNo from visitors where ('"+currCheckinDate+"'> CheckoutDate) or ('"+currCheckoutDate+"'< CheckinDate) )"
+        query = "select RoomNo from visitors where not (('"+currCheckinDate+"'> CheckoutDate) or ('"+currCheckoutDate+"'< CheckinDate) or ('" +currCheckinDate +"'= CheckoutDate) or ('"+ currCheckoutDate +"' = CheckinDate) )"
         query2 = "select id , RoomType from room where RoomNo not in("+query+");"
         cursor.execute(query2)
         if cursor.rowcount !=0:
